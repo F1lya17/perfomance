@@ -71,7 +71,7 @@
             </header>;
         }
 
-        function Event(props) {
+        const Event = React.memo(function Event(props) {
             const ref = React.useRef();
 
             const { onSize } = props;
@@ -93,7 +93,7 @@
                     }
                 </button>
             </li>;
-        }
+        })
 
         const TABS = {
             all: {
@@ -225,9 +225,9 @@
             };
 
             let sizes = [];
-            const onSize = size => {
+            const onSize = React.useCallback(size => {
                 sizes = [...sizes, size];
-            };
+            });
 
             React.useEffect(() => {
                 const sumWidth = sizes.reduce((acc, item) => acc + item.width, 0);
