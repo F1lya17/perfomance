@@ -71,19 +71,7 @@
         }
 
         function Event(props) {
-            const ref = React.useRef();
-
-            const { onSize } = props;
-
-            React.useEffect(() => {
-                const width = ref.current.offsetWidth;
-                const height = ref.current.offsetHeight;
-                if (onSize) {
-                    onSize({ width, height });
-                }
-            });
-
-            return <li ref={ref} className={'event' + (props.slim ? ' event_slim' : '')}>
+            return <li className={'event' + (props.slim ? ' event_slim' : '')}>
                 <button className="event__button">
                     <span className={`event__icon event__icon_${props.icon}`} role="img" aria-label={props.iconLabel}></span>
                     <h4 className="event__title">{props.title}</h4>
@@ -209,7 +197,6 @@
         function Main() {
             const ref = React.useRef();
             const [activeTab, setActiveTab] = React.useState('');
-            const [hasRightScroll, setHasRightScroll] = React.useState(false);
 
             React.useEffect(() => {
                 if (!activeTab) {
@@ -220,21 +207,6 @@
             const onSelectInput = event => {
                 setActiveTab(event.target.value);
             };
-
-            let sizes = [];
-            const onSize = size => {
-                sizes = [...sizes, size];
-            };
-
-            React.useEffect(() => {
-                const sumWidth = sizes.reduce((acc, item) => acc + item.width, 0);
-                const sumHeight = sizes.reduce((acc, item) => acc + item.height, 0);
-
-                const newHasRightScroll = sumWidth > ref.current.offsetWidth;
-                if (newHasRightScroll !== hasRightScroll) {
-                    setHasRightScroll(newHasRightScroll);
-                }
-            });
 
             const onArrowCLick = () => {
                 const scroller = ref.current.querySelector('.section__panel:not(.section__panel_hidden)');
@@ -377,15 +349,14 @@
                                         <Event
                                             key={index}
                                             {...item}
-                                            onSize={onSize}
                                         />
                                     )}
                                 </ul>
                             </div>
                         )}
-                        {hasRightScroll &&
-                            <div className="section__arrow" onClick={onArrowCLick}></div>
-                        }
+
+                        <div className="section__arrow" onClick={onArrowCLick}></div>
+
                     </div>
                 </section>
             </main>;
