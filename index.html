@@ -211,7 +211,7 @@
             const [activeTab, setActiveTab] = React.useState('');
             const [hasRightScroll, setHasRightScroll] = React.useState(false);
             const [tempKey, setTempKey] = React.useState([]);
-            const [elementsIndex, setElementsIndex] = React.useState(25);
+            //const [elementsIndex, setElementsIndex] = React.useState(25);
 
             React.useEffect(() => {
                 if (!activeTab) {
@@ -257,7 +257,7 @@
                         left: scroller.scrollLeft + 400,
                         behavior: 'smooth'
                     });
-                    setElementsIndex(prev => prev + 2)
+                    //setElementsIndex(prev => prev + 2)
                 }
             };
 
@@ -388,7 +388,7 @@
                         {tempKey.map(key =>
                             <div key={key} role="tabpanel" className={'section__panel' + (key === activeTab ? '' : ' section__panel_hidden')} aria-hidden={key === activeTab ? 'false' : 'true'} id={`panel_${key}`} aria-labelledby={`tab_${key}`}>
                                 <ul className="section__panel-list">
-                                    {TABS[key].items.slice(0, elementsIndex).map((item, index) =>
+                                    {TABS[key].items.map((item, index) =>
                                         <Event
                                             key={index}
                                             {...item}
