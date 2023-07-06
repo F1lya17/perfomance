@@ -210,16 +210,30 @@
             const ref = React.useRef();
             const [activeTab, setActiveTab] = React.useState('');
             const [hasRightScroll, setHasRightScroll] = React.useState(false);
+            const [tempKey, setTempKey] = React.useState([]);
 
             React.useEffect(() => {
                 if (!activeTab) {
-                    setActiveTab(new URLSearchParams(location.search).get('tab') || 'all');
+                    const newTab = new URLSearchParams(location.search).get('tab');
+                    if (newTab) {
+                        setActiveTab(newTab);
+                        setTempKey([newTab]);
+                    }
+                    else {
+                        setActiveTab('all');
+                        setTempKey(['all']);
+                    }
                 }
             }, []);
 
             const onSelectInput = event => {
                 setActiveTab(event.target.value);
+                changeKey(event.target.value);
             };
+
+            const changeKey = (key) => {
+                setTempKey([key]);
+            }
 
             let sizes = [];
             const onSize = size => {
@@ -228,7 +242,6 @@
 
             React.useEffect(() => {
                 const sumWidth = sizes.reduce((acc, item) => acc + item.width, 0);
-                const sumHeight = sizes.reduce((acc, item) => acc + item.height, 0);
 
                 const newHasRightScroll = sumWidth > ref.current.offsetWidth;
                 if (newHasRightScroll !== hasRightScroll) {
@@ -361,7 +374,7 @@
                                     className={'section__tab' + (key === activeTab ? ' section__tab_active' : '')}
                                     id={`tab_${key}`}
                                     aria-controls={`panel_${key}`}
-                                    onClick={() => setActiveTab(key)}
+                                    onClick={() => { setActiveTab(key); changeKey(key) }}
                                 >
                                     {TABS[key].title}
                                 </li>
@@ -370,7 +383,7 @@
                     </div>
 
                     <div className="section__panel-wrapper" ref={ref}>
-                        {TABS_KEYS.map(key =>
+                        {tempKey.map(key =>
                             <div key={key} role="tabpanel" className={'section__panel' + (key === activeTab ? '' : ' section__panel_hidden')} aria-hidden={key === activeTab ? 'false' : 'true'} id={`panel_${key}`} aria-labelledby={`tab_${key}`}>
                                 <ul className="section__panel-list">
                                     {TABS[key].items.map((item, index) =>
