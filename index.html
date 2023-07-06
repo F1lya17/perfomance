@@ -211,7 +211,7 @@
             const [activeTab, setActiveTab] = React.useState('');
             const [hasRightScroll, setHasRightScroll] = React.useState(false);
             const [tempKey, setTempKey] = React.useState([]);
-            const [elementsIndex, setElementsIndex] = React.useState(15);
+            const [elementsIndex, setElementsIndex] = React.useState(25);
 
             React.useEffect(() => {
                 if (!activeTab) {
@@ -257,7 +257,7 @@
                         left: scroller.scrollLeft + 400,
                         behavior: 'smooth'
                     });
-                    setTimeout(() => setElementsIndex(prev => prev + 2), 0);
+                    setElementsIndex(prev => prev + 2)
                 }
             };
 
